@@ -32,11 +32,8 @@ if not isAllowed() then
     return
 end
 
--- ===== LOAD MAIN SCRIPT =====
-
-
-local ok, err = pcall(function()
-    loadstring(game:HttpGet(url))()
+local success, err = pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Huliluli/TP-SCRIPT/refs/heads/main/loader.lua", true))()
 end)
 
 if not ok then
