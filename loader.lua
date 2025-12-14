@@ -1,14 +1,45 @@
---// Services
-- Loader script (short & safe)
-local allowed = {
-    ["SteFunTim"] = true,
-    ["stefuntimsno"] = true
+--// Loader.lua (SHORT & SAFE)
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- ===== DATE WHITELIST =====
+-- Format: ["Username"] = "YYYY-MM-DD"
+local WHITELIST = {
+    ["SteFunTim"] = "2025-12-31",
+    ["stefuntimsno"] = "2025-12-31"
 }
 
-local player = game.Players.LocalPlayer
-if not allowed[player.Name] then
-    warn("You are not whitelisted to use this script.")
+local function isAllowed()
+    local expire = WHITELIST[player.Name]
+    if not expire then return false end
+
+    local y,m,d = expire:match("(%d+)-(%d+)-(%d+)")
+    if not y then return false end
+
+    local expireTime = os.time({
+        year = tonumber(y),
+        month = tonumber(m),
+        day = tonumber(d)
+    })
+
+    return os.time() <= expireTime
+end
+
+if not isAllowed() then
+    warn("❌ You are not whitelisted or access expired")
     return
+end
+
+-- ===== LOAD MAIN SCRIPT =====
+local url = "https://raw.githubusercontent.com/Huliluli/TP-SCRIPT/main/tp_script.lua"
+
+local ok, err = pcall(function()
+    loadstring(game:HttpGet(url))()
+end)
+
+if not ok then
+    warn("❌ Failed to load main script:", err)
 end
 
 -- Load the main TP script from GitHub
