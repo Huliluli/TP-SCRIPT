@@ -1,16 +1,18 @@
-player.CharacterAdded:Connect(function()
-    task.wait(1)
-    if PlayerGui:FindFirstChild("CarpetTP_UI") then
-        PlayerGui.CarpetTP_UI:Destroy()
-    end
-end)
-
+--// Services
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
 local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 local Backpack = player:WaitForChild("Backpack")
+
+-- Remove UI on respawn
+player.CharacterAdded:Connect(function()
+    task.wait(1)
+    if PlayerGui:FindFirstChild("CarpetTP_UI") then
+        PlayerGui.CarpetTP_UI:Destroy()
+    end
+end)
 
 --// Character Loader
 local function getChar()
@@ -29,7 +31,12 @@ hum.HealthChanged:Connect(function(h)
     end
 end)
 
---// ================= UI =================
+-- ================= UI =================
+
+-- Prevent duplicate UI
+if PlayerGui:FindFirstChild("CarpetTP_UI") then
+    PlayerGui.CarpetTP_UI:Destroy()
+end
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "CarpetTP_UI"
@@ -80,7 +87,7 @@ button.AutoButtonColor = false
 button.Parent = frame
 Instance.new("UICorner", button)
 
--- Keybind
+-- Keybind UI
 local keyLabel = Instance.new("TextLabel")
 keyLabel.Position = UDim2.new(0,15,1,-30)
 keyLabel.Size = UDim2.new(0,80,0,20)
@@ -112,7 +119,7 @@ keyBox.FocusLost:Connect(function()
     end
 end)
 
--- Dragging
+-- Drag UI
 local dragging, dragStart, startPos
 frame.InputBegan:Connect(function(i)
     if i.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -140,7 +147,7 @@ UserInputService.InputEnded:Connect(function(i)
     end
 end)
 
---// ================= INSTANT TELEPORT =================
+-- ================= TELEPORT =================
 
 local positions = {
     Vector3.new(-349.9, -5.8, 116.4),
