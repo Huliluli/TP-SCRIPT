@@ -5,7 +5,7 @@ local allowed = false
 -- ================= WHITELIST =================
 -- Format: ["Username"] = "YYYY-MM-DD"
 local WHITELIST = {
-    ["SteFunTim"] = "2025-12-10"
+    ["SteFunTim"] = "2025-12-31"
     ["stefuntimsno"] = "2025-12-31"
 }
 
