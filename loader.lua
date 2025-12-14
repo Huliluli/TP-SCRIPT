@@ -5,8 +5,8 @@ local allowed = false
 -- ================= WHITELIST =================
 -- Format: ["Username"] = "YYYY-MM-DD"
 local WHITELIST = {
-    ["stefuntim"] = "2025-12-31",
-    ["otherUser"] = "2025-01-01"
+    ["SteFunTim | 2025-12-31"] = "2025-12-31"
+   
 }
 
 -- Check if player is whitelisted and not expired
