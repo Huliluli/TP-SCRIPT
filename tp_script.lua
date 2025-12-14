@@ -6,15 +6,7 @@ local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 local Backpack = player:WaitForChild("Backpack")
 
--- Remove UI on respawn
-player.CharacterAdded:Connect(function()
-    task.wait(1)
-    if PlayerGui:FindFirstChild("CarpetTP_UI") then
-        PlayerGui.CarpetTP_UI:Destroy()
-    end
-end)
-
---// Character Loader
+-- ================= CHARACTER =================
 local function getChar()
     local char = player.Character or player.CharacterAdded:Wait()
     local hum = char:WaitForChild("Humanoid")
@@ -24,16 +16,22 @@ end
 
 local char, hum, hrp = getChar()
 
---// Anti One-Hit Death
+-- Anti one-hit death
 hum.HealthChanged:Connect(function(h)
     if h <= 1 then
         hum.Health = math.max(hum.MaxHealth * 0.5, 10)
     end
 end)
 
--- ================= UI =================
+-- ================= CLEAN UI ON RESPAWN =================
+player.CharacterAdded:Connect(function()
+    task.wait(1)
+    if PlayerGui:FindFirstChild("CarpetTP_UI") then
+        PlayerGui.CarpetTP_UI:Destroy()
+    end
+end)
 
--- Prevent duplicate UI
+-- ================= UI =================
 if PlayerGui:FindFirstChild("CarpetTP_UI") then
     PlayerGui.CarpetTP_UI:Destroy()
 end
@@ -44,14 +42,12 @@ gui.ResetOnSpawn = false
 gui.Parent = PlayerGui
 
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0,260,0,180)
-frame.Position = UDim2.new(0.5,-130,0.5,-90)
+frame.Size = UDim2.new(0,260,0,200)
+frame.Position = UDim2.new(0.5,-130,0.5,-100)
 frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 frame.BorderSizePixel = 0
 frame.Parent = gui
-
 Instance.new("UICorner", frame).CornerRadius = UDim.new(0,12)
-Instance.new("UIStroke", frame).Thickness = 2
 
 -- Title
 local title = Instance.new("TextLabel")
@@ -148,7 +144,6 @@ UserInputService.InputEnded:Connect(function(i)
 end)
 
 -- ================= TELEPORT =================
-
 local positions = {
     Vector3.new(-349.9, -5.8, 116.4),
     Vector3.new(-347.3, -5.8, 8.6),
@@ -158,20 +153,18 @@ local positions = {
 local function equipCarpet()
     char, hum, hrp = getChar()
     local tool = Backpack:FindFirstChild("Flying Carpet") or char:FindFirstChild("Flying Carpet")
-    if tool then
-        hum:EquipTool(tool)
-    end
+    if tool then hum:EquipTool(tool) end
 end
 
 local busy = false
-local function startTeleport()
+local function teleport()
     if busy then return end
     busy = true
     status.Text = "משתגר..."
     equipCarpet()
 
-    for _, pos in ipairs(positions) do
-        if hrp and hrp.Parent then
+    for _,pos in ipairs(positions) do
+        if hrp then
             hrp.CFrame = CFrame.new(pos + Vector3.new(0,2,0))
             task.wait(0.15)
         end
@@ -181,10 +174,13 @@ local function startTeleport()
     busy = false
 end
 
-button.MouseButton1Click:Connect(startTeleport)
+button.MouseButton1Click:Connect(teleport)
 
 UserInputService.InputBegan:Connect(function(input, gp)
-    if not gp and input.KeyCode.Name == keyBox.Text then
-        startTeleport()
+    -- FIX: Check if input.KeyCode exists
+    if not gp and input.KeyCode and input.KeyCode.Name == keyBox.Text then
+        teleport()
     end
 end)
+
+print("TP Script loaded for:", player.Name)
