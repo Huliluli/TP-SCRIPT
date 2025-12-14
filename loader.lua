@@ -7,7 +7,8 @@ local player = Players.LocalPlayer
 -- Format: ["Username"] = "YYYY-MM-DD"
 local WHITELIST = {
     ["SteFunTim"] = "2025-12-31",
-    ["stefuntimsno"] = "2025-12-31"
+    ["stefuntimsno"] = "2025-12-31",
+    ["daproeti3"] = "2077-12-31"
 }
 
 local function isAllowed()
