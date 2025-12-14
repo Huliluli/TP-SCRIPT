@@ -1,13 +1,11 @@
-local HttpService = game:GetService("HttpService")
+local player = game.Players.LocalPlayer
+local allowed = false
 
 local WHITELIST_URL = "https://pastebin.com/raw/zByKDzHd"
 local SCRIPT_URL = "https://pastebin.com/raw/YZcaL8Hi"
 
-local player = game.Players.LocalPlayer
-local allowed = false
-
 local function httpget(url)
-    return HttpService:GetAsync(url)
+    return game:HttpGet(url)
 end
 
 local data = httpget(WHITELIST_URL)
