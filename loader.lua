@@ -6,6 +6,7 @@ local allowed = false
 -- Format: ["Username"] = "YYYY-MM-DD"
 local WHITELIST = {
     ["SteFunTim"] = "2025-12-31"
+    ["stefuntimsno"] = "2025-12-31"
 }
 
 -- Check if player is whitelisted and not expired
