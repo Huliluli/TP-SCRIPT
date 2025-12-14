@@ -1,40 +1,6 @@
--- Wave-compatible loader.lua (FIXED)
+-- ================= WAVE VERSION (NO HTTP) =================
 
--- Wait for player safely
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
-
--- ================= WHITELIST =================
--- Format: ["Username"] = "YYYY-MM-DD"
-local WHITELIST = {
-    ["SteFunTim"] = "2025-12-31",
-    ["stefuntimsno"] = "2025-12-31"
-}
-
-local function isAllowed(name)
-    local expireDate = WHITELIST[name]
-    if not expireDate then return false end
-
-    local y, m, d = expireDate:match("(%d+)-(%d+)-(%d+)")
-    if not y then return false end
-
-    local expireTime = os.time({
-        year = tonumber(y),
-        month = tonumber(m),
-        day = tonumber(d)
-    })
-
-    return os.time() <= expireTime
-end
-
-if not isAllowed(player.Name) then
-    warn("You are not whitelisted or your access expired")
-    return
-end
-
--- ================= MAIN SCRIPT =================
-local mainScript = [==[
---// Services
+-- Services
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
@@ -42,7 +8,34 @@ local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 local Backpack = player:WaitForChild("Backpack")
 
--- Remove UI on respawn
+-- ================= WHITELIST =================
+-- Add buyers here
+-- ["Username"] = "YYYY-MM-DD"
+local WHITELIST = {
+    ["SteFunTim"] = "2025-12-31",
+    ["stefuntimsno"] = "2025-12-31"
+}
+
+local function isAllowed()
+    local expire = WHITELIST[player.Name]
+    if not expire then return false end
+
+    local y,m,d = expire:match("(%d+)-(%d+)-(%d+)")
+    if not y then return false end
+
+    return os.time() <= os.time({
+        year = tonumber(y),
+        month = tonumber(m),
+        day = tonumber(d)
+    })
+end
+
+if not isAllowed() then
+    warn("Not whitelisted or expired")
+    return
+end
+
+-- ================= CLEAN UI ON RESPAWN =================
 player.CharacterAdded:Connect(function()
     task.wait(1)
     if PlayerGui:FindFirstChild("CarpetTP_UI") then
@@ -50,7 +43,7 @@ player.CharacterAdded:Connect(function()
     end
 end)
 
--- Character loader
+-- ================= CHARACTER =================
 local function getChar()
     local char = player.Character or player.CharacterAdded:Wait()
     local hum = char:WaitForChild("Humanoid")
@@ -60,19 +53,18 @@ end
 
 local char, hum, hrp = getChar()
 
--- Anti one-hit death
+-- Anti one-hit
 hum.HealthChanged:Connect(function(h)
     if h <= 1 then
         hum.Health = math.max(hum.MaxHealth * 0.5, 10)
     end
 end)
 
--- Prevent duplicate UI
+-- ================= UI =================
 if PlayerGui:FindFirstChild("CarpetTP_UI") then
     PlayerGui.CarpetTP_UI:Destroy()
 end
 
--- ================= UI =================
 local gui = Instance.new("ScreenGui")
 gui.Name = "CarpetTP_UI"
 gui.ResetOnSpawn = false
@@ -84,9 +76,7 @@ frame.Position = UDim2.new(0.5,-130,0.5,-90)
 frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 frame.BorderSizePixel = 0
 frame.Parent = gui
-
 Instance.new("UICorner", frame).CornerRadius = UDim.new(0,12)
-Instance.new("UIStroke", frame).Thickness = 2
 
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1,0,0,40)
@@ -115,10 +105,10 @@ button.Font = Enum.Font.GothamBold
 button.TextSize = 17
 button.BackgroundColor3 = Color3.fromRGB(45,45,45)
 button.TextColor3 = Color3.fromRGB(255,255,255)
-button.AutoButtonColor = false
 button.Parent = frame
 Instance.new("UICorner", button)
 
+-- ================= TELEPORT =================
 local positions = {
     Vector3.new(-349.9, -5.8, 116.4),
     Vector3.new(-347.3, -5.8, 8.6),
@@ -132,14 +122,14 @@ local function equipCarpet()
 end
 
 local busy = false
-local function startTeleport()
+local function teleport()
     if busy then return end
     busy = true
     status.Text = "משתגר..."
     equipCarpet()
 
-    for _, pos in ipairs(positions) do
-        if hrp and hrp.Parent then
+    for _,pos in ipairs(positions) do
+        if hrp then
             hrp.CFrame = CFrame.new(pos + Vector3.new(0,2,0))
             task.wait(0.15)
         end
@@ -149,16 +139,6 @@ local function startTeleport()
     busy = false
 end
 
-button.MouseButton1Click:Connect(startTeleport)
+button.MouseButton1Click:Connect(teleport)
 
-print("Script running for "..player.Name)
-]==]
-
--- SAFE EXECUTION
-local ok, err = pcall(function()
-    loadstring(mainScript)()
-end)
-
-if not ok then
-    warn("Loader error:", err)
-end
+print("TP Script loaded for:", player.Name)
