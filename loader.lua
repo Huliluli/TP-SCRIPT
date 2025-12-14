@@ -1,29 +1,37 @@
+-- Wave-compatible loader.lua
 local player = game.Players.LocalPlayer
 local allowed = false
 
-local WHITELIST_URL = "https://pastebin.com/raw/zByKDzHd"
-local SCRIPT_URL = "https://pastebin.com/raw/YZcaL8Hi"
+-- ================= WHITELIST =================
+-- Format: ["Username"] = "YYYY-MM-DD"
+local WHITELIST = {
+    ["stefuntim"] = "2025-12-31",
+    ["otherUser"] = "2025-01-01"
+}
 
-local function httpget(url)
-    return game:HttpGet(url)
+-- Check if player is whitelisted and not expired
+local function isAllowed(name)
+    local expireDate = WHITELIST[name]
+    if not expireDate then return false end
+    local y, m, d = expireDate:match("(%d+)-(%d+)-(%d+)")
+    local expireTime = os.time{year=tonumber(y), month=tonumber(m), day=tonumber(d)}
+    return os.time() <= expireTime
 end
 
-local data = httpget(WHITELIST_URL)
-for line in data:gmatch("[^\r\n]+") do
-    local user, date = line:match("(.+)|(.+)")
-    if user and date and user == player.Name then
-        local y,m,d = date:match("(%d+)-(%d+)-(%d+)")
-        local expire = os.time{year=y, month=m, day=d}
-        if os.time() <= expire then
-            allowed = true
-        end
-        break
-    end
-end
-
-if not allowed then
+if not isAllowed(player.Name) then
     warn("You are not whitelisted or your access expired")
     return
 end
 
-loadstring(httpget(SCRIPT_URL))()
+-- ================= MAIN SCRIPT =================
+-- Paste your tp_script.lua code here as a string
+local mainScript = [[
+-- Example content of tp_script.lua
+-- Replace this with your full teleport/UI code
+
+print("Script running for "..game.Players.LocalPlayer.Name)
+-- Add all your UI, teleport, anti-death logic here
+]]
+
+-- Execute the main script
+loadstring(mainScript)()
