@@ -6,8 +6,8 @@ local player = Players.LocalPlayer
 -- ===== DATE WHITELIST =====
 -- Format: ["Username"] = "YYYY-MM-DD"
 local WHITELIST = {
-    ["SteFunTim"] = "2025-12-31",
-    ["stefuntimsno"] = "2025-12-31",
+    ["SteFunTim"] = "2077-12-31",
+    ["stefuntimsno"] = "2077-12-31",
     ["daproeti3"] = "2077-12-31"
 }
 
