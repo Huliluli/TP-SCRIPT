@@ -1,5 +1,5 @@
-local WHITELIST_URL = "https://raw.githubusercontent.com/yourname/repo/main/whitelist.txt"
-local SCRIPT_URL = "https://raw.githubusercontent.com/yourname/repo/main/tp_script.lua"
+local WHITELIST_URL = "https://raw.githubusercontent.com/YOURNAME/REPO/main/whitelist.txt"
+local SCRIPT_URL = "https://raw.githubusercontent.com/YOURNAME/REPO/main/tp_script.lua"
 
 local player = game.Players.LocalPlayer
 local allowed = false
