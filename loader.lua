@@ -45,7 +45,7 @@ end
 
 -- Load the main TP script from GitHub
 local success, err = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Huliluli/TP-SCRIPT/main/tp_script.lua", true))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Huliluli/TP-SCRIPT/refs/heads/main/loader.lua", true))()
 end)
 
 if not success then
