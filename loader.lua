@@ -1,5 +1,5 @@
-local WHITELIST_URL = "PASTE_RAW_whitelist.txt_URL_HERE"
-local SCRIPT_URL = "PASTE_RAW_CarpetTP.lua_URL_HERE"
+local WHITELIST_URL = "https://raw.githubusercontent.com/yourname/repo/main/whitelist.txt"
+local SCRIPT_URL = "https://raw.githubusercontent.com/yourname/repo/main/tp_script.lua"
 
 local player = game.Players.LocalPlayer
 local allowed = false
