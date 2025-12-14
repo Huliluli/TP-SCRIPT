@@ -1,4 +1,10 @@
---// Services
+player.CharacterAdded:Connect(function()
+    task.wait(1)
+    if PlayerGui:FindFirstChild("CarpetTP_UI") then
+        PlayerGui.CarpetTP_UI:Destroy()
+    end
+end)
+
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
