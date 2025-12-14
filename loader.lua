@@ -33,7 +33,7 @@ if not isAllowed() then
 end
 
 -- ===== LOAD MAIN SCRIPT =====
-local url = "https://raw.githubusercontent.com/Huliluli/TP-SCRIPT/main/tp_script.lua"
+
 
 local ok, err = pcall(function()
     loadstring(game:HttpGet(url))()
