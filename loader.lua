@@ -1,4 +1,24 @@
 --// Services
+- Loader script (short & safe)
+local allowed = {
+    ["SteFunTim"] = true,
+    ["stefuntimsno"] = true
+}
+
+local player = game.Players.LocalPlayer
+if not allowed[player.Name] then
+    warn("You are not whitelisted to use this script.")
+    return
+end
+
+-- Load the main TP script from GitHub
+local success, err = pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Huliluli/TP-SCRIPT/main/tp_script.lua", true))()
+end)
+
+if not success then
+    warn("Failed to load TP script:", err)
+end
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
