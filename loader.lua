@@ -1,7 +1,7 @@
 local HttpService = game:GetService("HttpService")
 
-local WHITELIST_URL = "https://pastebin.com/raw/WHITELIST_ID"
-local SCRIPT_URL = "https://pastebin.com/raw/SCRIPT_ID"
+local WHITELIST_URL = "https://pastebin.com/raw/zByKDzHd"
+local SCRIPT_URL = "https://pastebin.com/raw/YZcaL8Hi"
 
 local player = game.Players.LocalPlayer
 local allowed = false
